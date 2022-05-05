@@ -325,16 +325,16 @@ select * from  usr_jesoto.mapping_consulta_sql('fisica');
 
 -- drop  FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
 -- drop  FUNCTION usr_jesoto.consulta_proto_campo(nproto int) 
---CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
+CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
 -- Si se sobrecarga, se podra generar dos consultas con otros parametros, en este caso , se podra consultar por 1 o 2 según sea el caso
-CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int)
+--CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int)
 returns 
-	table (resultado_proto int  ,
-			resultado_campo int ,
-			resultado_esquema text,
-			resultado_informacion text ,
-			resultado_nomprotocolo text ,
-			resultado_nombrecolumna text
+	table (informacion_proto int  ,
+			informacion_numero int ,
+			informacion_esquema text,
+			informacion_nombre_columna text ,
+			informacion_tipo_columna text ,
+			informacion_consulta_sql text
 			)
 as  $$
 begin 
@@ -342,16 +342,40 @@ begin
 	select a.proto
 			,a.numero
 			,a.esquema
-			,a.tipo_campo
-			,a.nombre_protocolo
+			--,a.tipo_campo
 			,a.nombre_columna
+			,a.tipo_columna
+			--,a.nombre_protocolo
+			--,a.nombre_columna
+			,a.consulta_sql
 	from (
 select distinct right(table_name,6)::int as proto
 			,right(left(column_name,-4),4)::int as numero
 			,(table_schema||'.'||table_name)::text as esquema
-			,left (column_name,-12)||''||right(column_name,4)::text  as tipo_campo
-			,table_name::text as nombre_protocolo
-			,column_name::text as nombre_columna
+			--,left (column_name,-12)||''||right(column_name,4)::text  as tipo_campo
+			,column_name::text nombre_columna
+			,case 	
+				when right(column_name,1)='x' then 'X = Lista Desplegable - Formato Texto'
+				when right(column_name,1)='n' then 'N = Numero - Formato numérico'
+				when right(column_name,1)='s' then 'S = SI/NO - Formato numérico'
+				when right(column_name,1)='o' then 'D = Formulas - Formato numérico'
+				when right(column_name,1)='d' then 'D = Fechas - Formato Date'
+				when right(column_name,1)='v' then 'V = Check - Formato numérico'
+				when right(column_name,1)='f' then 'F = Fecha - Formato Date'
+				--when right(column_name,1)='t' then 'T = Texto - Formato Texto'
+				else 'revisar'
+			end::text  tipo_columna
+		--	,table_name::text as nombre_protocolo
+		--	,column_name::text as nombre_columna
+			, case 
+			when right(column_name,1) ='x'
+				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' <>'''' ;'
+			when right(column_name,1) ='f'
+				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' is not null ;'
+			when right(column_name,1) ='t'
+				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' <>'''' ;'
+			else 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' = 1 ;' 
+		end::text 	consulta_sql
 			--,*
 from information_schema.columns loop
 where table_schema= 'protocolos_omi_vigentes'
@@ -367,16 +391,15 @@ and right (column_name,3) not in ('t_f' --fecha_
 							,'t_p' --peso
 							,'t_z' --permietro_
 							)
---) as a where (proto)::int =$1 and (numero)::int =$2;						
+) as a where (proto)::int =$1 and (numero)::int =$2;						
 -- para sobre carga ejecutar de nuevo perpo con un or 
-) as a where (proto)::int =$1 or (numero)::int =$2;
+--) as a where (proto)::int =$1; --or (numero)::int =$2;
 end ;
 $$ language 'plpgsql'
 ;
 
-select * from  usr_jesoto.consulta_proto_campo(int);
-select * from  usr_jesoto.consulta_proto_campo(int,int);
-
+select * from  usr_jesoto.consulta_proto_campo(347);
+select * from  usr_jesoto.consulta_proto_campo(347,128);
 
 
 
