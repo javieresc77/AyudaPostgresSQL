@@ -388,8 +388,7 @@ and right (column_name,3) in ('t_v' -- visto
 							,'t_t' --texto
 							,'t_f' --fecha_
 							)
-and right (column_name,3) not in ('t_f' --fecha_
-							,'t_l' --talla_
+and right (column_name,3) not in ('t_l' --talla_
 							,'t_p' --peso
 							,'t_z' --permietro_
 							)
