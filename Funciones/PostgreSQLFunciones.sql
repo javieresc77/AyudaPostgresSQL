@@ -386,6 +386,7 @@ and right (column_name,3) in ('t_v' -- visto
 							,'t_x' -- tabla_contraste
 							,'t_o' --formula
 							,'t_t' --texto
+							,'t_f' --fecha_
 							)
 and right (column_name,3) not in ('t_f' --fecha_
 							,'t_l' --talla_
