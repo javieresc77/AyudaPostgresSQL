@@ -362,7 +362,7 @@ select distinct right(table_name,6)::int as proto
 				when right(column_name,1)='d' then 'D = Fechas - Formato Date'
 				when right(column_name,1)='v' then 'V = Check - Formato numérico'
 				when right(column_name,1)='f' then 'F = Fecha - Formato Date'
-				--when right(column_name,1)='t' then 'T = Texto - Formato Texto'
+				when right(column_name,1)='t' then 'T = Texto - Formato Texto'
 				else 'revisar'
 			end::text  tipo_columna
 		--	,table_name::text as nombre_protocolo
@@ -385,6 +385,7 @@ and right (column_name,3) in ('t_v' -- visto
 							,'t_n' --numerico
 							,'t_x' -- tabla_contraste
 							,'t_o' --formula
+							,'t_t' --texto
 							)
 and right (column_name,3) not in ('t_f' --fecha_
 							,'t_l' --talla_
