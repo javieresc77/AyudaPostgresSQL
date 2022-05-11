@@ -325,9 +325,9 @@ select * from  usr_jesoto.mapping_consulta_sql('fisica');
 
 -- drop  FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
 -- drop  FUNCTION usr_jesoto.consulta_proto_campo(nproto int) 
-CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
+--CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int , ncampo int ) 
 -- Si se sobrecarga, se podra generar dos consultas con otros parametros, en este caso , se podra consultar por 1 o 2 según sea el caso
---CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int)
+CREATE or replace FUNCTION usr_jesoto.consulta_proto_campo(nproto int)
 returns 
 	table (informacion_proto int  ,
 			informacion_numero int ,
@@ -363,6 +363,7 @@ select distinct right(table_name,6)::int as proto
 				when right(column_name,1)='v' then 'V = Check - Formato numérico'
 				when right(column_name,1)='f' then 'F = Fecha - Formato Date'
 				when right(column_name,1)='t' then 'T = Texto - Formato Texto'
+				when right(column_name,1)='c' then 'C = Texto - Formato Texto'
 				else 'revisar'
 			end::text  tipo_columna
 		--	,table_name::text as nombre_protocolo
@@ -372,7 +373,7 @@ select distinct right(table_name,6)::int as proto
 				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' <>'''' ;'
 			when right(column_name,1) ='f'
 				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' is not null ;'
-			when right(column_name,1) ='t'
+			when right(column_name,1) in ('t','c')
 				then 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' <>'''' ;'
 			else 'select distinct nif,fecha,medico_id , '||' '||column_name||' from '||table_schema||'.'||table_name||' where '||column_name||' = 1 ;' 
 		end::text 	consulta_sql
@@ -386,15 +387,16 @@ and right (column_name,3) in ('t_v' -- visto
 							,'t_x' -- tabla_contraste
 							,'t_o' --formula
 							,'t_t' --texto
+							,'t_c' --comentario
 							)
 and right (column_name,3) not in ('t_f' --fecha_
 							,'t_l' --talla_
 							,'t_p' --peso
 							,'t_z' --permietro_
 							)
-) as a where (proto)::int =$1 and (numero)::int =$2;						
+--) as a where (proto)::int =$1 and (numero)::int =$2;						
 -- para sobre carga ejecutar de nuevo perpo con un or 
---) as a where (proto)::int =$1; --or (numero)::int =$2;
+) as a where (proto)::int =$1; --or (numero)::int =$2;
 end ;
 $$ language 'plpgsql'
 ;
