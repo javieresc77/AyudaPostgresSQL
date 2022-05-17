@@ -562,4 +562,19 @@ and column_name like '%'||$1 ||'%' --'%tabaquismo%'
 $$ 
 language sql;
 
-select usr_jesoto.consejeria_consulta_sql('alimen')
+select usr_jesoto.consejeria_consulta_sql('alimen');
+
+
+/*DATOS SENAME  para reemplazar consulta con parametros*/
+--drop function  usr_jesoto.sename(int) 
+CREATE FUNCTION usr_jesoto.sename(int) returns int 
+as 
+$$ 
+
+select distinct sename from usr_jesoto.sename_actual where nif2 is not null and nif2 =$1;
+		
+$$ 
+language sql
+; 
+
+select  usr_jesoto.sename(161422) ;
