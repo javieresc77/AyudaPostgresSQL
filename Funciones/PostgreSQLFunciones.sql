@@ -2,14 +2,14 @@
 CREATE FUNCTION usr_jesoto.med_estamento(varchar) returns text 
 as 
 $$
-	select  distinct med_estamento_desc as estamento
-		from admomi.iddmed
+	select  distinct replace (med_estamento_desc,'PSICOLOGÍA','PSICOLOGO/A') as estamento
+			from admomi.iddmed
 	where medico  =$1	
 	
 $$ 
 language sql; 
 
-select usr_jesoto.med_estamento('JSC');
+select usr_jesoto.med_estamento(text);
 
 
 
@@ -17,12 +17,26 @@ select usr_jesoto.med_estamento('JSC');
 CREATE FUNCTION usr_jesoto.id_estamento(int) returns text 
 as 
 $$
-	select  distinct med_estamento_desc as estamento
+	select  distinct replace (med_estamento_desc,'PSICOLOGÍA','PSICOLOGO/A') as estamento
 		from admomi.iddmed
 	where id  =$1	
 	
 $$ 
 language sql; 
+
+
+-- drop FUNCTION usr_jesoto.id_med_nombre
+CREATE FUNCTION usr_jesoto.id_med_nombre(int) returns text 
+as 
+$$
+	select  distinct med_nombre as nom_profesional
+		from admomi.iddmed
+	where id  =$1	
+	
+$$ 
+language sql; 
+
+
 
 
 -- drop FUNCTION usr_jesoto.id_med_especialidad
@@ -34,9 +48,9 @@ $$
 $$ 
 language sql; 
 
-select usr_jesoto.id_med_especialidad(15339339);
+select usr_jesoto.id_med_especialidad(int);
 
-select usr_jesoto.med_estamento('ABR')||' - '||usr_jesoto.id_estamento(17792028) estamento;
+select usr_jesoto.med_estamento(text)||' - '||usr_jesoto.id_estamento(int) estamento;
 
 
 CREATE OR REPLACE FUNCTION usr_jesoto.percapita_al_dia(integer)
