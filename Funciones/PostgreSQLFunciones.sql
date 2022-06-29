@@ -592,3 +592,26 @@ language sql
 ; 
 
 select  usr_jesoto.sename(161422) ;
+
+
+-- sacar porotocolos activos vs protocolos vigentes
+
+drop table if exists pr_activos;
+create temp table pr_activos as 
+select wproto,wprotocolo ,estado , horizonte , tipo ,wgrupo
+from admomi.iddco5
+where estado =0
+and horizonte not in ('Z')
+and not wgrupo in ('070','PRU','999')
+order by 2 
+;
+
+
+
+select * from pr_activos --wprotocolo
+
+
+select a.*,a01.wprotocolo
+	,lower('select distinct'||''''||a01.wprotocolo||'''::text as pr_nombre'||',estamento ,count(*) '||' '||' from '||' '||info_esquema_y_tabla||' '||' where aym(fecha) =aym(now()::date-10) group by 1,2 union')::varchar as consulta_sql2
+from usr_jesoto.consulta_proto_vigentes_sql('protocolos_omi_vigentes') as a
+inner join pr_activos as a01 on a01.wproto=  a.numero_proto
