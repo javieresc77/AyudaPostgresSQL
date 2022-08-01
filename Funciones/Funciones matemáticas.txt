@@ -1,0 +1,71 @@
+https://rextester.com/EFWW96437
+
+--PostgreSQL 9.6
+--'\\' is a delimiter
+-- Ejemplo funciones ramdon
+-- Semilla alaeatoriedad
+-- select setseed(0.12345); -- valor  entre -1 y 1 --Da error en el rextester
+select random() as RND; -- Genero valor aleatorio
+select trunc(random()*100+1);
+-- PostgreSQL no tiene una forma integrada de definir variables (globales) como MySQL u Oracle.
+-- CREATE TEMP TABLE val (val_id int PRIMARY KEY, val int);
+-- INSERT INTO val(val_id, val) VALUES (
+
+ 
+--Ejemplos operadores matemáticos
+SELECT 5+8 AS "Suma";
+SELECT (trunc(random()*100+1) + trunc(random()*100+1));
+SELECT 6-9 AS "Resta";
+SELECT 5 * 8 AS "Multiplicacion";
+SELECT 15 / 3 AS "Division";
+SELECT 15 % 2 AS "Resto"; 
+SELECT 4.0 ^ 2.0 AS "Exponente";
+SELECT |/16 AS "Raiz Cuadrada";
+SELECT ||/27 AS "Raiz Cúbica"
+SELECT 6! AS "Factorial";
+SELECT !!6 AS "Factorial (como prefijo)";
+SELECT @ -15.07 AS "Valor Absoluto"; 
+SELECT 53 & 38 AS "Bitwise AND";  
+SELECT 53 | 38 AS "Bitwise OR"; 
+SELECT 53 # 38 AS "Bitwise XOR";
+SELECT ~38 AS "Bitwise NOT"; 
+SELECT 25 << 2 AS "Bitwise Left Shift";  
+SELECT 120 >> 3  AS "Bitwise Right Shift"; 
+
+
+-- Funciones Matemáticas
+select abs(-17.4) as absoluto;
+select cbrt(27.0) as "raiz cubica";
+select ceil(-42.8) as "entero mayor mas proximo";
+select ceiling(-95.3) as "igual que ceil" ;
+select degrees(0.5) as grados;
+select div(9,4) as "división entera";
+select exp(1.0) as exponente;
+select floor(-42.8) as "entero menor mas proximo";
+select ln(2.0) as "logaritmo natural";
+select log(100.0) as "logaritmo de base 10";
+select log(2.0, 64.0) as "logaritmo de base explicita";
+select mod(9,4) as "resto de division entera";
+select pi() as "valor de constante pi";
+select power(9.0, 3.0) as "potencia de";
+select radians(45.0) as radianes;
+select round(42.4) as "redondeo a entero mas proximo";
+select round(42.4382, 2) as "redondeo a decimales especificados";
+select sign(-8.4) as "signo de ";
+select sqrt(2.0) as "raiz cuadrada";
+select trunc(42.8) as "valor truncado sin decimales";
+select trunc(42.4382, 2) as "valor truncado a decimales indicados";
+select width_bucket(5.35, 0.024, 10.06, 5) as "canales del histograma";
+select width_bucket(now(), array['yesterday', 'today', 'tomorrow']::timestamptz[]) as "Canales del histograma";
+
+
+-- Funciones trigonométricas
+select acos(0.234) as "inversa del coseno";
+select asin(0.234) as "inversa del seno";
+select atan(0.234) as "inversa de la tangente";
+select atan2(0.234) as "inversa de la tangente";
+select cos(0.234) as coseno;
+select sin(0.234) as seno;
+select tan(0.234) as seno;
+<F12><F11><F9><F8><F7><F6><F5><F4><F3><F2><F11>
+
