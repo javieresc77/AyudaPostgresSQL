@@ -1,1 +1,4 @@
-https://runebook.dev/es/docs/postgresql/sql-comment
+https://runebook.dev/es/docs/postgresql/sql-commentz
+
+Like con Array 
+https://stackoverflow.com/questions/4928054/postgresql-wildcard-like-for-any-of-a-list-of-words
