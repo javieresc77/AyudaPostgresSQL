@@ -615,3 +615,22 @@ select a.*,a01.wprotocolo
 	,lower('select distinct'||''''||a01.wprotocolo||'''::text as pr_nombre'||',estamento ,count(*) '||' '||' from '||' '||info_esquema_y_tabla||' '||' where aym(fecha) =aym(now()::date-10) group by 1,2 union')::varchar as consulta_sql2
 from usr_jesoto.consulta_proto_vigentes_sql('protocolos_omi_vigentes') as a
 inner join pr_activos as a01 on a01.wproto=  a.numero_proto
+
+
+
+
+select imagenes_policenter_wn_9356_t_x ,imagenes_endoscopias_cmsj_wn_9354_t_x 
+	,substring(imagenes_policenter_wn_9356_t_x ,'([0-9]{1,3})') as num
+	,substring(imagenes_endoscopias_cmsj_wn_9354_t_x ,'([0-9]{0,6})') as num2
+	,regexp_replace(imagenes_policenter_wn_9356_t_x, '[^\d]+', '', 'g')
+	,regexp_replace(imagenes_endoscopias_cmsj_wn_9354_t_x, '[^\d]+', '', 'g')
+	,substring(	regexp_replace(imagenes_endoscopias_cmsj_wn_9354_t_x, '[^\d]+', '', 'g'),4,3) resultado1
+	,case when imagenes_endoscopias_cmsj_wn_9354_t_x <> '' then substring(regexp_replace(imagenes_endoscopias_cmsj_wn_9354_t_x, '[^\d]+', '', 'g'),4,3)
+	when imagenes_policenter_wn_9356_t_x <> '' then substring(regexp_replace(imagenes_policenter_wn_9356_t_x, '[^\d]+', '', 'g'),4,3)
+	end as cod_endo
+	,case when substring(regexp_replace(imagenes_endoscopias_cmsj_wn_9354_t_x, '[^\d]+', '', 'g'),4,3) <>'' then substring(regexp_replace(imagenes_endoscopias_cmsj_wn_9354_t_x, '[^\d]+', '', 'g'),4,3)::smallint
+		when substring(regexp_replace(imagenes_policenter_wn_9356_t_x, '[^\d]+', '', 'g'),4,3) <> '' then substring(regexp_replace(imagenes_policenter_wn_9356_t_x, '[^\d]+', '', 'g'),4,3)::smallint
+	end as cod_endo2
+from protocolos_vigentes.pr_resolutividad_e_imagenes_praps_wp_000047
+order by 2 desc 
+;
